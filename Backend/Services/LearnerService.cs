@@ -22,9 +22,9 @@ namespace Backend.Services
             if (await _repo.HasAlreadySubmitted(userId, dto.AssignmentId))
                 throw new InvalidOperationException("Anda sudah pernah mengirim jawaban untuk tugas ini.");
 
-            var submission = new LearnerSubmission
+            var submission = new AssignmentProgress
             {
-                LearnerId = userId,
+                UserId = userId,
                 AssignmentId = dto.AssignmentId,
                 Answers = new List<SubmittedAnswer>()
             };

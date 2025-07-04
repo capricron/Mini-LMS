@@ -2,12 +2,13 @@
 
 @using Frontend.Services
 @using Frontend.Components
+@using Frontend.Dto
 @inject AssignmentService Service
 @inject NavigationManager Nav
 
 <h3>Detail Assignment</h3>
 
-@if (assignment == null)
+@if (assignment == null || submissions == null)
 {
     <p>Loading...</p>
 }
@@ -26,14 +27,44 @@ else
     {
         <MCQItem Question="question" />
     }
+
+    <h4 class="mt-4">Pengumpulan</h4>
+    @if (!submissions.Any())
+    {
+        <p>Tidak ada pengumpulan.</p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nama Siswa</th>
+                    <th>Nilai</th>
+                    <th>Waktu Pengumpulan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sub in submissions)
+                {
+                    <tr>
+                        <td>@sub.LearnerName</td>
+                        <td>@sub.Score</td>
+                        <td>@sub.SubmittedAt.ToString("dd MMM yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
 @code {
     [Parameter] public int Id { get; set; }
     private AssignmentDto? assignment;
+    private IEnumerable<SubmissionDto> submissions = new List<SubmissionDto>();
 
     protected override async Task OnInitializedAsync()
     {
         assignment = await Service.GetByIdWithQuestionsAsync(Id);
+        submissions = await Service.GetSubmissionsByAssignmentIdAsync(Id);
     }
 }

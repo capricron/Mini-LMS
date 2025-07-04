@@ -7,7 +7,9 @@ namespace Backend.Repository
     public interface ILearnerRepository
     {
         Task<bool> HasAlreadySubmitted(string learnerId, int assignmentId);
-        Task<LearnerSubmission> SubmitAnswersAsync(LearnerSubmission submission);
+        Task<AssignmentProgress> SubmitAnswersAsync(AssignmentProgress submission);
         Task<SubmissionResultDto?> GetSubmissionResultAsync(string learnerId, int assignmentId);
+
+        Task<IEnumerable<AssignmentProgressSummaryDto>> GetSubmissionsByAssignmentIdAsync(int assignmentId);
     }
 }

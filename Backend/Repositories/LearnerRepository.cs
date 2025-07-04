@@ -11,24 +11,24 @@ namespace Backend.Repository
 
         public LearnerRepository(AppDbContext context) => _context = context;
 
-        public async Task<bool> HasAlreadySubmitted(string learnerId, int assignmentId)
+        public async Task<bool> HasAlreadySubmitted(string UserId, int assignmentId)
         {
-            return await _context.LearnerSubmissions
-                .AnyAsync(s => s.LearnerId == learnerId && s.AssignmentId == assignmentId);
+            return await _context.AssignmentProgresss
+                .AnyAsync(s => s.UserId == UserId && s.AssignmentId == assignmentId);
         }
 
         // Repository/LearnerRepository.cs
-        public async Task<LearnerSubmission> SubmitAnswersAsync(LearnerSubmission submission)
+        public async Task<AssignmentProgress> SubmitAnswersAsync(AssignmentProgress submission)
         {
-            await _context.LearnerSubmissions.AddAsync(submission);
+            await _context.AssignmentProgresss.AddAsync(submission);
             await _context.SaveChangesAsync();
             return submission;
         }
 
-        public async Task<SubmissionResultDto?> GetSubmissionResultAsync(string learnerId, int assignmentId)
+        public async Task<SubmissionResultDto?> GetSubmissionResultAsync(string UserId, int assignmentId)
         {
-            return await _context.LearnerSubmissions
-                .Where(s => s.LearnerId == learnerId && s.AssignmentId == assignmentId)
+            return await _context.AssignmentProgresss
+                .Where(s => s.UserId == UserId && s.AssignmentId == assignmentId)
                 .Select(s => new SubmissionResultDto
                 {
                     Score = s.Score,
@@ -38,5 +38,20 @@ namespace Backend.Repository
                 })
                 .FirstOrDefaultAsync();
         }
+        
+        public async Task<IEnumerable<AssignmentProgressSummaryDto>> GetSubmissionsByAssignmentIdAsync(int assignmentId)
+        {
+            return await _context.AssignmentProgresss
+                .Where(s => s.AssignmentId == assignmentId)
+                .Select(s => new AssignmentProgressSummaryDto
+                {
+                    UserId = s.UserId,
+                    LearnerName = s.User.Username, // Pastikan User.Name tersedia
+                    Score = s.Score,
+                    SubmittedAt = s.SubmittedAt
+                })
+                .ToListAsync();
+        }
+
     }
 }

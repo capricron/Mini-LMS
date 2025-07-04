@@ -68,8 +68,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Weather.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcV2VhdGhlci5yYXpvcg==
+[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Tugas.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHVnYXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/TugasDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHVnYXNEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Unauthorized.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVW5hdXRob3JpemVkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/_Imports.razor]

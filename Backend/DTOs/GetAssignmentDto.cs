@@ -9,5 +9,8 @@ namespace Backend.DTOs
 
         public List<MCQDto> Questions { get; set; } = new();
 
+        public SubmissionResultDto? SubmissionResult { get; set; }
+
+
     }
 }

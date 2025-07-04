@@ -1,0 +1,43 @@
+@page "/tugas"
+@using Frontend.DTOs
+@using Frontend.Services
+@inject AssignmentService AssignmentService
+@inject NavigationManager Nav
+
+<h3>Tugas</h3>
+
+@if (assignments == null)
+{
+    <p>Loading...</p>
+}
+else if (!assignments.Any())
+{
+    <p>Tidak ada tugas tersedia.</p>
+}
+else
+{
+    foreach (var item in assignments)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>@item.Title</h5>
+                <p>@item.Description</p>
+                <button class="btn btn-info me-2" @onclick="() => NavigateToDetail(item.Id)">Lihat Detail</button>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private List<AssignmentDto> assignments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        assignments = (await AssignmentService.GetAllAsync())?.ToList() ?? new();
+    }
+
+    private void NavigateToDetail(int id)
+    {
+        Nav.NavigateTo($"/tugas/detail/{id}");
+    }
+}

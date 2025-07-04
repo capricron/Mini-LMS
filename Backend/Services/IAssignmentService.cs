@@ -12,6 +12,10 @@ namespace Backend.Services
 
         Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id);
 
+        Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id, string? userId, string? role);
+
+        Task<IEnumerable<AssignmentProgressSummaryDto>> GetSubmissionsByAssignmentIdAsync(int assignmentId);
+
         Task<int> CreateAssignmentWithQuestionsAsync(CreateAssignmentDto dto);
     }
 }

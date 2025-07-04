@@ -1,5 +1,7 @@
+using System.Security.Claims;
 using Backend.DTOs;
 using Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
@@ -16,6 +18,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<GetAssignmentDto>> GetAll() => await _service.GetAllAsync();
 
         // [HttpGet("{id}")]
@@ -27,6 +30,7 @@ namespace Backend.Controllers
 
         // POST: api/assignments
         [HttpPost]
+        [Authorize(Roles = "Manager")] // hanya Instructor yang bisa lihat
         public async Task<ActionResult<int>> CreateAsync(CreateAssignmentDto dto)
         {
             var id = await _service.CreateAssignmentWithQuestionsAsync(dto);
@@ -41,15 +45,8 @@ namespace Backend.Controllers
             return Ok(assignment);
         }
 
-
-        // [HttpPut("{id}")]
-        // public async Task<IActionResult> Update(int id, UpdateAssignmentDto dto)
-        // {
-        //     await _service.UpdateAsync(id, dto);
-        //     return NoContent();
-        // }
-
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Manager")] // hanya Instructor yang bisa lihat
         public async Task<IActionResult> Delete(int id)
         {
             await _service.DeleteAsync(id);
@@ -57,10 +54,25 @@ namespace Backend.Controllers
         }
 
         [HttpGet("{id}/with-questions")]
+        [Authorize]
         public async Task<IActionResult> GetByIdWithQuestions(int id)
         {
-            var dto = await _service.GetByIdWithQuestionsAsync(id);
-            return dto == null ? NotFound() : Ok(dto);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var isInLearnerRole = User.IsInRole("Learner");
+            Console.WriteLine(User);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("User ID tidak ditemukan dalam token.");
+
+            if (isInLearnerRole)
+            {
+                var dto = await _service.GetByIdWithQuestionsAsync(id, userId, "Learner");
+                return dto == null ? NotFound() : Ok(dto);
+            }
+            else
+            {
+                var dtoDefault = await _service.GetByIdWithQuestionsAsync(id);
+                return dtoDefault == null ? NotFound() : Ok(dtoDefault);
+            }
         }
 
         [HttpPut("{id}")]
@@ -68,6 +80,14 @@ namespace Backend.Controllers
         {
             await _service.UpdateAsync(id, dto);
             return NoContent();
+        }
+
+        [HttpGet("{assignmentId}/submissions")]
+        [Authorize(Roles = "Manager")] // hanya Instructor yang bisa lihat
+        public async Task<IActionResult> GetSubmissionsForAssignment(int assignmentId)
+        {
+            var submissions = await _service.GetSubmissionsByAssignmentIdAsync(assignmentId);
+            return Ok(submissions);
         }
     }
 }

@@ -36,6 +36,10 @@ namespace Backend.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Media")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
@@ -50,11 +54,12 @@ namespace Backend.Migrations
                             Id = 1,
                             Description = "Pertanyaan pilihan ganda tentang aritmatika dasar",
                             IsActive = true,
+                            Media = "",
                             Title = "Quiz Matematika Dasar"
                         });
                 });
 
-            modelBuilder.Entity("Backend.Models.LearnerSubmission", b =>
+            modelBuilder.Entity("Backend.Models.AssignmentProgress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -65,10 +70,6 @@ namespace Backend.Migrations
                     b.Property<int>("AssignmentId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("LearnerId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<double>("Score")
                         .HasColumnType("double precision");
 
@@ -76,6 +77,7 @@ namespace Backend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -84,7 +86,7 @@ namespace Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LearnerSubmissions");
+                    b.ToTable("AssignmentProgresss");
                 });
 
             modelBuilder.Entity("Backend.Models.McqQuestion", b =>
@@ -190,6 +192,9 @@ namespace Backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AssignmentProgressId")
+                        .HasColumnType("integer");
+
                     b.Property<char>("GivenAnswer")
                         .HasColumnType("character(1)");
 
@@ -199,12 +204,9 @@ namespace Backend.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SubmissionId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SubmissionId");
+                    b.HasIndex("AssignmentProgressId");
 
                     b.ToTable("SubmittedAnswers");
                 });
@@ -248,13 +250,13 @@ namespace Backend.Migrations
                         {
                             Id = "user2",
                             Email = "andi@example.com",
-                            Password = "$2a$11$abcXYZ123defABC789ghiOQwZtLmNpQzE6bOqFyKUfS0Zl9uT8wC",
+                            Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2",
                             RoleId = 2,
                             Username = "andi"
                         });
                 });
 
-            modelBuilder.Entity("Backend.Models.LearnerSubmission", b =>
+            modelBuilder.Entity("Backend.Models.AssignmentProgress", b =>
                 {
                     b.HasOne("Backend.Models.Assignment", "Assignment")
                         .WithMany()
@@ -264,7 +266,9 @@ namespace Backend.Migrations
 
                     b.HasOne("Backend.Models.User", "User")
                         .WithMany("Submissions")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Assignment");
 
@@ -284,13 +288,13 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.SubmittedAnswer", b =>
                 {
-                    b.HasOne("Backend.Models.LearnerSubmission", "Submission")
+                    b.HasOne("Backend.Models.AssignmentProgress", "AssignmentProgress")
                         .WithMany("Answers")
-                        .HasForeignKey("SubmissionId")
+                        .HasForeignKey("AssignmentProgressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Submission");
+                    b.Navigation("AssignmentProgress");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -309,7 +313,7 @@ namespace Backend.Migrations
                     b.Navigation("Questions");
                 });
 
-            modelBuilder.Entity("Backend.Models.LearnerSubmission", b =>
+            modelBuilder.Entity("Backend.Models.AssignmentProgress", b =>
                 {
                     b.Navigation("Answers");
                 });

@@ -1,4 +1,5 @@
 // File: Services/AuthService.cs
+using Frontend.Dto;
 using Frontend.DTOs;
 using Microsoft.JSInterop;
 using System.Net.Http.Json;
@@ -32,9 +33,15 @@ namespace Frontend.Services
             return null;
         }
 
-        public async Task SaveTokenAsync(string token)
+        public async Task SaveTokenAsync(string token, string role)
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", token);
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "role", role);
         }
+        public async Task<string?> GetRoleAsync()
+        {
+            return await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "role");
+        }
+
     }
 }

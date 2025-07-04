@@ -21,7 +21,7 @@
 
         if (result != null)
         {
-            await AuthService.SaveTokenAsync(result.Token);
+            await AuthService.SaveTokenAsync(result.Token, result.Role);
             
             AuthStateProvider.MarkUserAsAuthenticated();
 

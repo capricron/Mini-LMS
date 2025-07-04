@@ -1,0 +1,117 @@
+@page "/tugas/detail/{Id:int}"
+@using Frontend.DTOs
+@using Frontend.Services
+@inject LearnerAssignmentService LearnerAssignmentService
+@inject NavigationManager Nav
+
+
+<h4>@assignment?.Title</h4>
+<p>@assignment?.Description</p>
+
+@if (
+    @assignment?.SubmissionResult != null
+)
+{
+    <p>Kamu sudah mengerjakan soal ini</p>
+     <p>Nilai Kamu: @assignment?.SubmissionResult.Score</p>
+}
+else if(
+    assignment == null || !assignment.Questions.Any()
+){
+    <p>Tidak ada soal tersedia untuk tugas ini.</p>
+}
+else
+{
+    <form @onsubmit="HandleSubmit">
+        @for (int i = 0; i < assignment.Questions.Count; i++)
+        {
+            var question = assignment.Questions[i];
+            <div class="mb-3">
+                <label class="form-label"><strong>@(i + 1). @question.QuestionText</strong></label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="@($"q{i}")" value="A"
+                           checked="@(selectedAnswers.ContainsKey(question.Id) && selectedAnswers[question.Id] == "A")"
+                           @onchange='@(() => UpdateAnswer(question.Id, "A"))' />
+                    <label class="form-check-label">@question.OptionA</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="@($"q{i}")" value="B"
+                           checked="@(selectedAnswers.ContainsKey(question.Id) && selectedAnswers[question.Id] == "B")"
+                           @onchange='@(() => UpdateAnswer(question.Id, "B"))' />
+                    <label class="form-check-label">@question.OptionB</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="@($"q{i}")" value="C"
+                           checked="@(selectedAnswers.ContainsKey(question.Id) && selectedAnswers[question.Id] == "C")"
+                           @onchange='@(() => UpdateAnswer(question.Id, "C"))' />
+                    <label class="form-check-label">@question.OptionC</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="@($"q{i}")" value="D"
+                           checked="@(selectedAnswers.ContainsKey(question.Id) && selectedAnswers[question.Id] == "D")"
+                           @onchange='@(() => UpdateAnswer(question.Id, "D"))' />
+                    <label class="form-check-label">@question.OptionD</label>
+                </div>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-success">Kumpulkan Jawaban</button>
+    </form>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private AssignmentDto? assignment;
+    private Dictionary<int, string> selectedAnswers = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        assignment = await LearnerAssignmentService.GetWithQuestionsAsync(Id);
+        if (assignment != null)
+        {
+            foreach (var question in assignment.Questions)
+            {
+                selectedAnswers[question.Id] = ""; // Inisialisasi jawaban kosong
+            }
+        }
+    }
+
+    private void UpdateAnswer(int questionId, string answer)
+    {
+        selectedAnswers[questionId] = answer; // Simpan jawaban yang dipilih
+    }
+
+    private async Task HandleSubmit()
+    {
+        try
+        {
+            // Pastikan format payload sesuai dengan yang diharapkan server
+            var payload = new
+                {
+                    assignmentId = assignment!.Id,
+                    answers = selectedAnswers.ToDictionary(kvp => kvp.Key.ToString(), kvp => kvp.Value)
+                };
+
+            await LearnerAssignmentService.SubmitAnswersAsync(payload);
+
+            // Hitung nilai
+            int score = 0;
+            foreach (var question in assignment.Questions)
+            {
+                if (selectedAnswers.ContainsKey(question.Id) && selectedAnswers[question.Id] == question.CorrectAnswer)
+                {
+                    score++;
+                }
+            }
+
+            Nav.NavigateTo($"/tugas/detail/{Id}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Gagal submit jawaban: {ex.Message}");
+            // Tambahkan notifikasi error jika diperlukan
+        }
+    }
+}

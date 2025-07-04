@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
     public DbSet<McqQuestion> MCQs { get; set; } = null!;
 
     // Tambahkan DbSet baru
-    public DbSet<LearnerSubmission> LearnerSubmissions { get; set; } = null!;
+    public DbSet<AssignmentProgress> AssignmentProgresss { get; set; } = null!;
     public DbSet<SubmittedAnswer> SubmittedAnswers { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
@@ -89,7 +89,7 @@ public class AppDbContext : DbContext
             Id = "user2",
             Username = "andi",
             Email = "andi@example.com",
-            Password = "$2a$11$abcXYZ123defABC789ghiOQwZtLmNpQzE6bOqFyKUfS0Zl9uT8wC", // Hash dari "managerpass"
+            Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
             RoleId = managerRole.Id
         };
 

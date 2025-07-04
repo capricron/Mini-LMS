@@ -39,9 +39,10 @@ namespace Backend.Repositories
 
         public async Task<GetAssignmentDto> CreateAsync(CreateAssignmentDto dto)
         {
-            var assignment = new Models.Assignment
+            var assignment = new Assignment
             {
                 Title = dto.Title,
+                Media = dto.Media,
                 Description = dto.Description,
                 IsActive = dto.IsActive
             };
@@ -86,6 +87,7 @@ namespace Backend.Repositories
             assignment.Title = dto.Title;
             assignment.Description = dto.Description;
             assignment.IsActive = dto.IsActive;
+            assignment.Media = dto.Media;
 
             // 5. Simpan perubahan
             await _context.SaveChangesAsync();
@@ -132,6 +134,7 @@ namespace Backend.Repositories
                 Title = dto.Title,
                 Description = dto.Description,
                 IsActive = dto.IsActive,
+                Media = dto.Media,
                 Questions = dto.Questions?.Select(q => new Models.McqQuestion
                 {
                     QuestionText = q.QuestionText,

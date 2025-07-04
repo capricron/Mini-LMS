@@ -13,6 +13,6 @@ namespace Backend.Models
         public Role Role { get; set; } = null!;
 
         // Relasi ke Submission
-        public ICollection<LearnerSubmission> Submissions { get; set; } = new List<LearnerSubmission>();
+        public ICollection<AssignmentProgress> Submissions { get; set; } = new List<AssignmentProgress>();
     }
 }
