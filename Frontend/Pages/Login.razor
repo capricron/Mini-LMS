@@ -1,0 +1,31 @@
+@page "/login"
+@using Frontend.Services
+@inject AuthService AuthService
+@inject IJSRuntime JS
+@inject NavigationManager Nav
+@inject Frontend.Services.AuthStateProvider AuthStateProvider
+
+<h3>Login</h3>
+
+<input type="text" @bind="Email" placeholder="Email" />
+<input type="password" @bind="Password" placeholder="Password" />
+<button @onclick="HandleLogin">Login</button>
+
+@code {
+    string Email = "";
+    string Password = "";
+
+    private async Task HandleLogin()
+    {
+        var result = await AuthService.LoginAsync(Email, Password);
+
+        if (result != null)
+        {
+            await AuthService.SaveTokenAsync(result.Token);
+            
+            AuthStateProvider.MarkUserAsAuthenticated();
+
+            Nav.NavigateTo("/");
+        }
+    }
+}

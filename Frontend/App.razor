@@ -1,12 +1,30 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Frontend.Components
+
+<!-- App.razor -->
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            @{
+                // Cek apakah route adalah "/login"
+                var pageType = routeData.PageType;
+                if (pageType.FullName == "Frontend.Pages.Login") // Sesuaikan namespace
+                {
+                    <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+                }
+                else
+                {
+                    <AuthRouteGuard>
+                        <RouteView RouteData="@routeData" DefaultLayout="@typeof(Layout.MainLayout)" />
+                    </AuthRouteGuard>
+                }
+            }
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(Layout.MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
