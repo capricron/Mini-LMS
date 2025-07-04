@@ -37,6 +37,7 @@ public class AppDbContext : DbContext
             Id = 1,
             Title = "Quiz Matematika Dasar",
             Description = "Pertanyaan pilihan ganda tentang aritmatika dasar",
+            Media = "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm",
             IsActive = true
         };
 
@@ -94,5 +95,10 @@ public class AppDbContext : DbContext
         };
 
         modelBuilder.Entity<User>().HasData(user1, user2);
+
+        modelBuilder.Entity<SubmittedAnswer>()
+            .HasOne(sa => sa.McqQuestion)
+            .WithMany()
+            .HasForeignKey(sa => sa.McqQuestionId);
     }
 }

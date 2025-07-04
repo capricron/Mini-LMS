@@ -18,6 +18,7 @@ else
         <div class="card-body">
             <h4>@assignment.Title</h4>
             <p>@assignment.Description</p>
+            <iframe src="@assignment.Media"></iframe>
             <p>Status: @(assignment.IsActive ? "Aktif" : "Tidak Aktif")</p>
         </div>
     </div>
@@ -50,6 +51,11 @@ else
                         <td>@sub.LearnerName</td>
                         <td>@sub.Score</td>
                         <td>@sub.SubmittedAt.ToString("dd MMM yyyy HH:mm")</td>
+                        <td>
+                        <button class="btn btn-sm btn-primary" @onclick="() => NavigateToReview(Id, sub.UserId)">
+                            Lihat Jawaban
+                        </button>
+                        </td>
                     </tr>
                 }
             </tbody>
@@ -66,5 +72,10 @@ else
     {
         assignment = await Service.GetByIdWithQuestionsAsync(Id);
         submissions = await Service.GetSubmissionsByAssignmentIdAsync(Id);
+    }
+
+    private void NavigateToReview(int assignmentId, string userId)
+    {
+        Nav.NavigateTo($"/assignments/review/{assignmentId}/{userId}");
     }
 }

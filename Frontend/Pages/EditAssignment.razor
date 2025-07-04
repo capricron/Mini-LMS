@@ -26,14 +26,19 @@ else
             <InputTextArea @bind-Value="assignment.Description" class="form-control" />
         </div>
 
+        <div class="form-group mb-3">
+            <label>Media</label>
+            <InputTextArea @bind-Value="assignment.Media" class="form-control" />
+        </div>
+
         <div class="form-check mb-3">
             <InputCheckbox @bind-Value="assignment.IsActive" /> Is Active
         </div>
 
         <h4>MCQ Questions</h4>
 
-        @foreach (var q in assignment.Questions.ToList())
-        {
+    @foreach (var q in assignment.Questions.ToList())
+    {
             <div class="card mb-2 p-3">
                 <p><strong>@q.QuestionText</strong></p>
                 <p>A. @q.OptionA</p>
@@ -43,7 +48,7 @@ else
                 <p><strong>Jawaban Benar:</strong> @q.CorrectAnswer</p>
                 <button type="button" class="btn btn-danger btn-sm" @onclick="() => RemoveQuestion(q)">Remove</button>
             </div>
-        }
+    }
 
         <h5>Add New Question</h5>
         <div class="form-group mb-3">

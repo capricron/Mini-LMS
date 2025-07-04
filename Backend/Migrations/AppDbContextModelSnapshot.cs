@@ -54,7 +54,7 @@ namespace Backend.Migrations
                             Id = 1,
                             Description = "Pertanyaan pilihan ganda tentang aritmatika dasar",
                             IsActive = true,
-                            Media = "",
+                            Media = "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm",
                             Title = "Quiz Matematika Dasar"
                         });
                 });
@@ -201,12 +201,17 @@ namespace Backend.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("McqQuestionId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("QuestionId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AssignmentProgressId");
+
+                    b.HasIndex("McqQuestionId");
 
                     b.ToTable("SubmittedAnswers");
                 });
@@ -294,7 +299,15 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Backend.Models.McqQuestion", "McqQuestion")
+                        .WithMany()
+                        .HasForeignKey("McqQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AssignmentProgress");
+
+                    b.Navigation("McqQuestion");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>

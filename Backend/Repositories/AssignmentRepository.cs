@@ -92,7 +92,7 @@ namespace Backend.Repositories
             // 5. Simpan perubahan
             await _context.SaveChangesAsync();
         }
-        
+
         public async Task DeleteAsync(int id)
         {
             var assignment = await _context.Assignments.FindAsync(id);
@@ -103,9 +103,11 @@ namespace Backend.Repositories
             }
         }
 
-        public async Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id)
+        public async Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id, string role)
         {
-            return await _context.Assignments
+            if (role == "Learner")
+            {
+                return await _context.Assignments
                 .Where(a => a.Id == id)
                 .Select(a => new GetAssignmentDto
                 {
@@ -113,6 +115,31 @@ namespace Backend.Repositories
                     Title = a.Title,
                     Description = a.Description,
                     IsActive = a.IsActive,
+                    Media = a.Media,
+                    Questions = a.Questions.Select(q => new MCQDto
+                    {
+                        Id = q.Id,
+                        QuestionText = q.QuestionText,
+                        OptionA = q.OptionA,
+                        OptionB = q.OptionB,
+                        OptionC = q.OptionC,
+                        OptionD = q.OptionD,
+                        CorrectAnswer = ""
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+            }
+            else if (role == "Manager")
+            {
+                return await _context.Assignments
+                .Where(a => a.Id == id)
+                .Select(a => new GetAssignmentDto
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Description = a.Description,
+                    IsActive = a.IsActive,
+                    Media = a.Media,
                     Questions = a.Questions.Select(q => new MCQDto
                     {
                         Id = q.Id,
@@ -125,6 +152,8 @@ namespace Backend.Repositories
                     }).ToList()
                 })
                 .FirstOrDefaultAsync();
+            }
+            return null;
         }
 
         public async Task<int> CreateWithQuestionsAsync(CreateAssignmentDto dto)
@@ -150,5 +179,34 @@ namespace Backend.Repositories
             await _context.SaveChangesAsync();
             return assignment.Id;
         }
+
+        public async Task<AssignmentReviewDto> GetAssignmentReviewAsync(int assignmentId, string userId)
+        {
+            var progress = await _context.AssignmentProgresss
+                .Include(p => p.Assignment)
+                .Include(p => p.Answers)
+                .ThenInclude(answer => answer.McqQuestion)
+                .FirstOrDefaultAsync(p => p.AssignmentId == assignmentId && p.UserId == userId);
+
+            if (progress == null)
+                throw new KeyNotFoundException("Submission tidak ditemukan");
+
+            return new AssignmentReviewDto
+            {
+                AssignmentId = progress.AssignmentId,
+                Title = progress.Assignment?.Title ?? "Unknown",
+                Score = progress.Score,
+                SubmittedAt = progress.SubmittedAt,
+                Answers = progress.Answers.Select(a => new QuestionAnswerDto
+                {
+                    QuestionId = a.QuestionId,
+                    QuestionText = a.McqQuestion.QuestionText,
+                    GivenAnswer = a.GivenAnswer,
+                    IsCorrect = a.IsCorrect,
+                    CorrectAnswer = a.McqQuestion.CorrectAnswer
+                }).ToList()
+            };
+        }
     }
+
 }

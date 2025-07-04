@@ -19,14 +19,19 @@ namespace Backend.Models
         public ICollection<SubmittedAnswer> Answers { get; set; } = new List<SubmittedAnswer>();
     }
 
-    public class SubmittedAnswer
-    {
-        public int Id { get; set; }
-        public int QuestionId { get; set; }
-        public char GivenAnswer { get; set; }
-        public bool IsCorrect { get; set; }
+   public class SubmittedAnswer
+{
+    public int Id { get; set; }
+    public int QuestionId { get; set; } // ID soal dari MCQ
+    public char GivenAnswer { get; set; }
+    public bool IsCorrect { get; set; }
 
-        public AssignmentProgress AssignmentProgress { get; set; } = null!; // Navigasi
-        public int AssignmentProgressId { get; set; } // Foreign Key
-    }
+    // Navigasi ke AssignmentProgress
+    public AssignmentProgress AssignmentProgress { get; set; } = null!;
+    public int AssignmentProgressId { get; set; }
+
+    // 🔥 TAMBAHKAN FOREIGN KEY EXPLISIT
+    public int McqQuestionId { get; set; } // Ini harus sama dengan QuestionId
+    public McqQuestion McqQuestion { get; set; } = null!; // Navigasi
+}
 }

@@ -7,8 +7,7 @@
 
 <h4>@assignment?.Title</h4>
 <p>@assignment?.Description</p>
-
-@if (
+<iframe width="560" height="315" src="@assignment?.Media" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>@if (
     @assignment?.SubmissionResult != null
 )
 {

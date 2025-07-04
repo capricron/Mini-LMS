@@ -26,12 +26,6 @@ namespace Backend.Services
 
         public Task DeleteAsync(int id) => _repo.DeleteAsync(id);
 
-        public async Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id)
-        {
-            // Default behavior for non-Learner or when userId/role not checked yet
-            return await _repo.GetByIdWithQuestionsAsync(id);
-        }
-
         public async Task<int> CreateAssignmentWithQuestionsAsync(CreateAssignmentDto dto)
         {
             return await _repo.CreateWithQuestionsAsync(dto);
@@ -40,7 +34,8 @@ namespace Backend.Services
         // Overloaded method to support user context (userId & role)
         public async Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id, string? userId, string? role)
         {
-            var dto = await _repo.GetByIdWithQuestionsAsync(id);
+
+            var dto = await _repo.GetByIdWithQuestionsAsync(id, role ?? string.Empty);
 
             if (dto == null) return null;
 
@@ -65,6 +60,11 @@ namespace Backend.Services
         public async Task<IEnumerable<AssignmentProgressSummaryDto>> GetSubmissionsByAssignmentIdAsync(int assignmentId)
         {
             return await _learnerRepo.GetSubmissionsByAssignmentIdAsync(assignmentId);
+        }
+
+        public async Task<AssignmentReviewDto> GetAssignmentReviewAsync(int assignmentId, string userId)
+        {
+            return await _repo.GetAssignmentReviewAsync(assignmentId, userId);
         }
     }
 }

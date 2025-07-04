@@ -126,7 +126,8 @@ namespace Backend.Migrations
                     QuestionId = table.Column<int>(type: "integer", nullable: false),
                     GivenAnswer = table.Column<char>(type: "character(1)", nullable: false),
                     IsCorrect = table.Column<bool>(type: "boolean", nullable: false),
-                    AssignmentProgressId = table.Column<int>(type: "integer", nullable: false)
+                    AssignmentProgressId = table.Column<int>(type: "integer", nullable: false),
+                    McqQuestionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,12 +138,18 @@ namespace Backend.Migrations
                         principalTable: "AssignmentProgresss",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SubmittedAnswers_MCQs_McqQuestionId",
+                        column: x => x.McqQuestionId,
+                        principalTable: "MCQs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "Assignments",
                 columns: new[] { "Id", "Description", "IsActive", "Media", "Title" },
-                values: new object[] { 1, "Pertanyaan pilihan ganda tentang aritmatika dasar", true, "", "Quiz Matematika Dasar" });
+                values: new object[] { 1, "Pertanyaan pilihan ganda tentang aritmatika dasar", true, "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm", "Quiz Matematika Dasar" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
@@ -192,6 +199,11 @@ namespace Backend.Migrations
                 column: "AssignmentProgressId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SubmittedAnswers_McqQuestionId",
+                table: "SubmittedAnswers",
+                column: "McqQuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
@@ -201,19 +213,19 @@ namespace Backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MCQs");
-
-            migrationBuilder.DropTable(
                 name: "SubmittedAnswers");
 
             migrationBuilder.DropTable(
                 name: "AssignmentProgresss");
 
             migrationBuilder.DropTable(
-                name: "Assignments");
+                name: "MCQs");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Assignments");
 
             migrationBuilder.DropTable(
                 name: "Roles");

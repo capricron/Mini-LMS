@@ -41,6 +41,7 @@ namespace Backend.Services
                 var submittedAnswer = new SubmittedAnswer
                 {
                     QuestionId = answer.Key,
+                    McqQuestionId = answer.Key, // 🔥 SAMAKAN DENGAN QuestionId
                     GivenAnswer = answer.Value,
                     IsCorrect = char.ToUpper(question.CorrectAnswer[0]) == char.ToUpper(answer.Value)
                 };

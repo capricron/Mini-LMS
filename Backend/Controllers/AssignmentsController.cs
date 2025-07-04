@@ -58,21 +58,22 @@ namespace Backend.Controllers
         public async Task<IActionResult> GetByIdWithQuestions(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var isInLearnerRole = User.IsInRole("Learner");
-            Console.WriteLine(User);
+
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized("User ID tidak ditemukan dalam token.");
 
-            if (isInLearnerRole)
+            if (User.IsInRole("Learner"))
             {
                 var dto = await _service.GetByIdWithQuestionsAsync(id, userId, "Learner");
                 return dto == null ? NotFound() : Ok(dto);
             }
-            else
+            else if (User.IsInRole("Manager"))
             {
-                var dtoDefault = await _service.GetByIdWithQuestionsAsync(id);
+                var dtoDefault = await _service.GetByIdWithQuestionsAsync(id, userId, "Manager");
                 return dtoDefault == null ? NotFound() : Ok(dtoDefault);
             }
+
+            return Forbid();
         }
 
         [HttpPut("{id}")]
@@ -88,6 +89,14 @@ namespace Backend.Controllers
         {
             var submissions = await _service.GetSubmissionsByAssignmentIdAsync(assignmentId);
             return Ok(submissions);
+        }
+
+        [HttpGet("review/{assignmentId}/{userId}")]
+        // [Authorize(Roles = "Manager")] // hanya Instructor yang bisa mengakses review
+        public async Task<ActionResult<AssignmentReviewDto>> GetReview(int assignmentId, string userId)
+        {
+            var dto = await _service.GetAssignmentReviewAsync(assignmentId, userId);
+            return Ok(dto);
         }
     }
 }

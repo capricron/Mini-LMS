@@ -8,6 +8,6 @@ namespace Backend.DTOs
         public string OptionB { get; set; } = string.Empty;
         public string OptionC { get; set; } = string.Empty;
         public string OptionD { get; set; } = string.Empty;
-        public required string CorrectAnswer { get; set; }
+        public required string? CorrectAnswer { get; set; }
     }
 }

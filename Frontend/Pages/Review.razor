@@ -1,0 +1,75 @@
+@page "/assignments/review/{AssignmentId:int}/{UserId}"
+@using Frontend.Dto
+@inject NavigationManager Nav
+@using Frontend.Services
+@inject AssignmentService Service
+<h4>Review Jawaban Siswa</h4>
+
+@if (review == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>@review.Title</h5>
+            <p>Nilai: <strong>@review.Score</strong></p>
+            <p>Waktu Pengumpulan: @review.SubmittedAt.ToString("dd MMM yyyy HH:mm")</p>
+        </div>
+    </div>
+
+    <h5>Jawaban Soal</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Pertanyaan</th>
+                <th>Jawaban Anda</th>
+                <th>Jawaban Benar</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < review.Answers.Count; i++)
+            {
+                var answer = review.Answers[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@answer.QuestionText</td>
+                    <td><strong>@answer.GivenAnswer</strong></td>
+                    <td>@answer.CorrectAnswer</td>
+                    <td>
+                        @if (answer.IsCorrect)
+                        {
+                            <span class="badge bg-success">Benar</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Salah</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button class="btn btn-secondary" @onclick="GoBack">Kembali</button>
+}
+
+@code {
+    [Parameter] public int AssignmentId { get; set; }
+    [Parameter] public string UserId { get; set; } = string.Empty;
+
+    private AssignmentReviewDto? review;
+
+    protected override async Task OnInitializedAsync()
+    {
+        review = await Service.GetReviewAsync(AssignmentId, UserId);
+    }
+
+    private void GoBack()
+    {
+        Nav.NavigateTo($"/assignments/detail/{AssignmentId}");
+    }
+}

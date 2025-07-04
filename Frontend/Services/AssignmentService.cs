@@ -169,5 +169,25 @@ namespace Frontend.Services
                 return new List<SubmissionDto>();
             }
         }
+
+        public async Task<AssignmentReviewDto?> GetReviewAsync(int assignmentId, string userId)
+        {
+            try
+            {
+                var token = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
+
+                if (string.IsNullOrEmpty(token))
+                    throw new UnauthorizedAccessException("JWT token tidak ditemukan di localStorage.");
+
+                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                return await _http.GetFromJsonAsync<AssignmentReviewDto>($"api/assignments/review/{assignmentId}/{userId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting assignment {ex.Message}");
+                return null;
+            }
+        }
     }
 }

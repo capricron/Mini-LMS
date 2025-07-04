@@ -10,12 +10,10 @@ namespace Backend.Services
         Task UpdateAsync(int id, UpdateAssignmentDto dto);
         Task DeleteAsync(int id);
 
-        Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id);
-
         Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id, string? userId, string? role);
 
         Task<IEnumerable<AssignmentProgressSummaryDto>> GetSubmissionsByAssignmentIdAsync(int assignmentId);
-
+        Task<AssignmentReviewDto> GetAssignmentReviewAsync(int assignmentId, string userId);
         Task<int> CreateAssignmentWithQuestionsAsync(CreateAssignmentDto dto);
     }
 }
