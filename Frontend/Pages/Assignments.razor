@@ -1,0 +1,42 @@
+@page "/assignments"
+@using Frontend.Services
+
+@inject AssignmentService Service
+@inject NavigationManager Nav
+
+<h3>Assignments</h3>
+<button class="btn btn-primary mb-3" @onclick="NavigateToAdd">Add New</button>
+
+@foreach (var item in assignments)
+{
+    <div class="card mb-2">
+        <div class="card-body">
+            <h5>@item.Title</h5>
+            <p>@item.Description</p>
+            <p>Active: @item.IsActive.ToString()</p>
+            <button class="btn btn-info me-2" @onclick="() => NavigateToDetail(item.Id)">Detail</button>
+            <button class="btn btn-warning me-2" @onclick="() => NavigateToEdit(item.Id)">Edit</button>
+            <button class="btn btn-danger" @onclick="() => DeleteAssignment(item.Id)">Delete</button>
+        </div>
+    </div>
+}
+
+@code {
+    private List<AssignmentDto> assignments = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        assignments = (await Service.GetAllAsync())?.ToList() ?? new();
+    }
+
+    private void NavigateToAdd() => Nav.NavigateTo("/assignments/create");
+    private void NavigateToEdit(int id) => Nav.NavigateTo($"/assignments/edit/{id}");
+    private void NavigateToDetail(int id) => Nav.NavigateTo($"/assignments/detail/{id}");
+
+    private async Task DeleteAssignment(int id)
+    {
+        await Service.DeleteAsync(id);
+        assignments = (await Service.GetAllAsync())?.ToList() ?? new();
+        StateHasChanged();
+    }
+}

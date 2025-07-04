@@ -1,0 +1,39 @@
+@page "/assignments/detail/{Id:int}"
+
+@using Frontend.Services
+@using Frontend.Components
+@inject AssignmentService Service
+@inject NavigationManager Nav
+
+<h3>Detail Assignment</h3>
+
+@if (assignment == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4>@assignment.Title</h4>
+            <p>@assignment.Description</p>
+            <p>Status: @(assignment.IsActive ? "Aktif" : "Tidak Aktif")</p>
+        </div>
+    </div>
+
+    <h4>Pertanyaan MCQ</h4>
+    @foreach (var question in assignment.Questions)
+    {
+        <MCQItem Question="question" />
+    }
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private AssignmentDto? assignment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        assignment = await Service.GetByIdWithQuestionsAsync(Id);
+    }
+}

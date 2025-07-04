@@ -1,0 +1,98 @@
+@page "/assignments/create"
+@using Frontend.DTOs
+@using Frontend.Services
+@inject AssignmentService Service
+@inject NavigationManager Nav
+
+<h3>Create New Assignment with MCQ</h3>
+
+<EditForm Model="@assignment" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group mb-3">
+        <label>Title</label>
+        <InputText @bind-Value="assignment.Title" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Description</label>
+        <InputTextArea @bind-Value="assignment.Description" class="form-control" />
+    </div>
+
+    <div class="form-check mb-3">
+        <InputCheckbox @bind-Value="assignment.IsActive" /> Is Active
+    </div>
+
+    <h4>Add MCQ Questions</h4>
+    @foreach (var q in assignment.Questions)
+    {
+        <div class="card mb-2 p-3">
+            <p><strong>@q.QuestionText</strong></p>
+            <p>A. @q.OptionA</p>
+            <p>B. @q.OptionB</p>
+            <p>C. @q.OptionC</p>
+            <p>D. @q.OptionD</p>
+            <p><strong>Jawaban Benar:</strong> @q.CorrectAnswer</p>
+        </div>
+    }
+
+    <h5>Add New Question</h5>
+    <div class="form-group mb-3">
+        <label>Pertanyaan</label>
+        <InputText @bind-Value="newQuestion.QuestionText" class="form-control" />
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <label>Opsi A</label>
+            <InputText @bind-Value="newQuestion.OptionA" class="form-control" />
+        </div>
+        <div class="col-6">
+            <label>Opsi B</label>
+            <InputText @bind-Value="newQuestion.OptionB" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col-6">
+            <label>Opsi C</label>
+            <InputText @bind-Value="newQuestion.OptionC" class="form-control" />
+        </div>
+        <div class="col-6">
+            <label>Opsi D</label>
+            <InputText @bind-Value="newQuestion.OptionD" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Jawaban Benar (A/B/C/D)</label>
+        <InputText @bind-Value="newQuestion.CorrectAnswer" class="form-control" />
+    </div>
+
+    <button type="button" class="btn btn-info mt-2" @onclick="AddQuestion">Add Question</button>
+    <button type="submit" class="btn btn-success mt-2">Create Assignment</button>
+    <button type="button" class="btn btn-secondary ms-2 mt-2" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+    private AssignmentDto assignment = new();
+    private MCQDto newQuestion = new();
+
+    private void AddQuestion()
+    {
+        if (!string.IsNullOrWhiteSpace(newQuestion.QuestionText))
+        {
+            assignment.Questions.Add(newQuestion);
+            newQuestion = new MCQDto();
+        }
+    }
+
+    private async Task Save()
+    {
+        await Service.CreateAsync(assignment);
+        Nav.NavigateTo("/assignments");
+    }
+
+    private void Cancel() => Nav.NavigateTo("/assignments");
+}

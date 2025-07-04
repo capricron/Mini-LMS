@@ -1,0 +1,126 @@
+@page "/assignments/edit/{Id:int}"
+@using Frontend.DTOs
+@using Frontend.Services
+@inject AssignmentService Service
+@inject NavigationManager Nav
+
+<h3>Edit Assignment</h3>
+
+@if (assignment == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <EditForm Model="@assignment" OnValidSubmit="Save">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group mb-3">
+            <label>Title</label>
+            <InputText @bind-Value="assignment.Title" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label>Description</label>
+            <InputTextArea @bind-Value="assignment.Description" class="form-control" />
+        </div>
+
+        <div class="form-check mb-3">
+            <InputCheckbox @bind-Value="assignment.IsActive" /> Is Active
+        </div>
+
+        <h4>MCQ Questions</h4>
+
+        @foreach (var q in assignment.Questions.ToList())
+        {
+            <div class="card mb-2 p-3">
+                <p><strong>@q.QuestionText</strong></p>
+                <p>A. @q.OptionA</p>
+                <p>B. @q.OptionB</p>
+                <p>C. @q.OptionC</p>
+                <p>D. @q.OptionD</p>
+                <p><strong>Jawaban Benar:</strong> @q.CorrectAnswer</p>
+                <button type="button" class="btn btn-danger btn-sm" @onclick="() => RemoveQuestion(q)">Remove</button>
+            </div>
+        }
+
+        <h5>Add New Question</h5>
+        <div class="form-group mb-3">
+            <InputText @bind-Value="newQuestion.QuestionText" placeholder="Pertanyaan" class="form-control" />
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <InputText @bind-Value="newQuestion.OptionA" placeholder="Opsi A" class="form-control" />
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="newQuestion.OptionB" placeholder="Opsi B" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-6">
+                <InputText @bind-Value="newQuestion.OptionC" placeholder="Opsi C" class="form-control" />
+            </div>
+            <div class="col-6">
+                <InputText @bind-Value="newQuestion.OptionD" placeholder="Opsi D" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group mt-2">
+            <InputText @bind-Value="newQuestion.CorrectAnswer" placeholder="Jawaban Benar (A/B/C/D)" class="form-control" />
+        </div>
+
+        <button type="button" class="btn btn-info mt-2" @onclick="AddQuestion">Add Question</button>
+        <button type="submit" class="btn btn-primary mt-2">Update Assignment</button>
+        <button type="button" class="btn btn-secondary ms-2 mt-2" @onclick="Cancel">Cancel</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private AssignmentDto assignment = new();
+    private MCQDto newQuestion = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var result = await Service.GetByIdWithQuestionsAsync(Id);
+        if (result != null)
+        {
+            assignment = result;
+        }
+        else
+        {
+            // Handle error, redirect or show message
+            Nav.NavigateTo("/assignments");
+        }
+    }
+
+    private void AddQuestion()
+    {
+        if (!string.IsNullOrWhiteSpace(newQuestion.QuestionText))
+        {
+            assignment.Questions.Add(newQuestion);
+            newQuestion = new MCQDto();
+        }
+    }
+
+    private void RemoveQuestion(MCQDto question)
+    {
+        assignment.Questions.Remove(question);
+    }
+
+    private async Task Save()
+    {
+        await Service.UpdateAsync(assignment.Id, assignment);
+        Nav.NavigateTo("/assignments");
+    }
+
+    private void Cancel()
+    {
+        Nav.NavigateTo("/assignments");
+    }
+}

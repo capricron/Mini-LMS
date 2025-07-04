@@ -1,0 +1,24 @@
+@namespace Frontend.Components
+@using Microsoft.AspNetCore.Components
+
+<div class="card mb-2">
+    <div class="card-body">
+        <h5>@Assignment.Title</h5>
+        <p>@Assignment.Description</p>
+        <p>Active: @Assignment.IsActive.ToString()</p>
+        <button class="btn btn-danger" @onclick="HandleDelete">Delete</button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public AssignmentDto Assignment { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<int> OnDelete { get; set; }
+
+    private async Task HandleDelete()
+    {
+        await OnDelete.InvokeAsync(Assignment.Id);
+    }
+}
