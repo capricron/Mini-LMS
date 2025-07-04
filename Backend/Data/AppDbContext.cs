@@ -7,8 +7,15 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+    // DbSet untuk model yang sudah ada
     public DbSet<Assignment> Assignments { get; set; } = null!;
     public DbSet<McqQuestion> MCQs { get; set; } = null!;
+
+    // Tambahkan DbSet baru
+    public DbSet<LearnerSubmission> LearnerSubmissions { get; set; } = null!;
+    public DbSet<SubmittedAnswer> SubmittedAnswers { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -16,6 +23,11 @@ public class AppDbContext : DbContext
 
         // Seed data Assignment & MCQ
         SeedData(modelBuilder);
+
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role)
+            .WithMany(r => r.Users)
+            .HasForeignKey(u => u.RoleId);
     }
 
     private void SeedData(ModelBuilder modelBuilder)
@@ -56,5 +68,31 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Assignment>().HasData(assignment1);
         modelBuilder.Entity<McqQuestion>().HasData(mcqs);
+
+        var learnerRole = new Role { Id = 1, Name = "Learner" };
+        var managerRole = new Role { Id = 2, Name = "Manager" };
+
+        modelBuilder.Entity<Role>().HasData(learnerRole, managerRole);
+
+        // Contoh user
+        var user1 = new User
+        {
+            Id = "user1",
+            Username = "budi",
+            Email = "budi@example.com",
+            Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
+            RoleId = learnerRole.Id
+        };
+
+        var user2 = new User
+        {
+            Id = "user2",
+            Username = "andi",
+            Email = "andi@example.com",
+            Password = "$2a$11$abcXYZ123defABC789ghiOQwZtLmNpQzE6bOqFyKUfS0Zl9uT8wC", // Hash dari "managerpass"
+            RoleId = managerRole.Id
+        };
+
+        modelBuilder.Entity<User>().HasData(user1, user2);
     }
 }

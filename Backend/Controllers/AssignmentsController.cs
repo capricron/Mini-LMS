@@ -62,5 +62,12 @@ namespace Backend.Controllers
             var dto = await _service.GetByIdWithQuestionsAsync(id);
             return dto == null ? NotFound() : Ok(dto);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAssignment(int id, UpdateAssignmentDto dto)
+        {
+            await _service.UpdateAsync(id, dto);
+            return NoContent();
+        }
     }
 }

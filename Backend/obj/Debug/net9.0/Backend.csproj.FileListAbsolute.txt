@@ -132,3 +132,13 @@ C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\obj\Debug\net9.0\refint\Backe
 C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\obj\Debug\net9.0\Backend.pdb
 C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\obj\Debug\net9.0\Backend.genruntimeconfig.cache
 C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\obj\Debug\net9.0\ref\Backend.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\obj\Debug\net9.0\Backend.sourcelink.json
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Backend\bin\Debug\net9.0\BCrypt.Net-Next.dll

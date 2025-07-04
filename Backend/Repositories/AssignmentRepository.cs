@@ -55,61 +55,42 @@ namespace Backend.Repositories
                 IsActive = assignment.IsActive
             };
         }
-
         public async Task UpdateAsync(int id, UpdateAssignmentDto dto)
         {
             var assignment = await _context.Assignments
                 .Include(a => a.Questions)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
-            if (assignment == null) return;
+            if (assignment == null)
+                return;
 
+            // 1. Simpan daftar soal baru dari DTO
+            var newQuestions = dto.Questions.Select(q => new McqQuestion
+            {
+                QuestionText = q.QuestionText,
+                OptionA = q.OptionA,
+                OptionB = q.OptionB,
+                OptionC = q.OptionC,
+                OptionD = q.OptionD,
+                CorrectAnswer = q.CorrectAnswer,
+                AssignmentId = id // Pastikan ini di-set
+            }).ToList();
+
+            // 2. Hapus semua soal lama dari context (berdasarkan assignment)
+            _context.MCQs.RemoveRange(assignment.Questions);
+
+            // 3. Tambahkan semua soal baru
+            await _context.MCQs.AddRangeAsync(newQuestions);
+
+            // 4. Update data assignment utama
             assignment.Title = dto.Title;
             assignment.Description = dto.Description;
             assignment.IsActive = dto.IsActive;
 
-            // Hapus semua soal lama
-            _context.MCQs.RemoveRange(assignment.Questions);
-
-            // Tambahkan soal baru
-            foreach (var dtoQuestion in dto.Questions)
-            {
-                var existingQuestion = assignment.Questions.FirstOrDefault(q => q.Id == dtoQuestion.Id);
-
-                if (existingQuestion == null)
-                {
-                    // Tambah baru
-                    assignment.Questions.Add(new McqQuestion
-                    {
-                        QuestionText = dtoQuestion.QuestionText,
-                        OptionA = dtoQuestion.OptionA,
-                        OptionB = dtoQuestion.OptionB,
-                        OptionC = dtoQuestion.OptionC,
-                        OptionD = dtoQuestion.OptionD,
-                        CorrectAnswer = dtoQuestion.CorrectAnswer
-                    });
-                }
-                else
-                {
-                    // Update data
-                    existingQuestion.QuestionText = dtoQuestion.QuestionText;
-                    existingQuestion.OptionA = dtoQuestion.OptionA;
-                    existingQuestion.OptionB = dtoQuestion.OptionB;
-                    existingQuestion.OptionC = dtoQuestion.OptionC;
-                    existingQuestion.OptionD = dtoQuestion.OptionD;
-                    existingQuestion.CorrectAnswer = dtoQuestion.CorrectAnswer;
-                }
-            }
-
-            // Hapus soal yang tidak ada di DTO
-            var idsToKeep = dto.Questions.Select(q => q.Id).ToList();
-            var questionsToRemove = assignment.Questions.Where(q => !idsToKeep.Contains(q.Id)).ToList();
-
-            _context.MCQs.RemoveRange(questionsToRemove);
-
+            // 5. Simpan perubahan
             await _context.SaveChangesAsync();
         }
-
+        
         public async Task DeleteAsync(int id)
         {
             var assignment = await _context.Assignments.FindAsync(id);
