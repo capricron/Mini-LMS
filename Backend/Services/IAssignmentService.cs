@@ -4,7 +4,7 @@ namespace Backend.Services
 {
     public interface IAssignmentService
     {
-        Task<IEnumerable<GetAssignmentDto>> GetAllAsync();
+        Task<IEnumerable<GetAssignmentDto>> GetAllAsync(bool includeInactive);
         Task<GetAssignmentDto?> GetByIdAsync(int id);
         Task<GetAssignmentDto> CreateAsync(CreateAssignmentDto dto);
         Task UpdateAsync(int id, UpdateAssignmentDto dto);

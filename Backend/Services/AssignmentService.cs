@@ -16,7 +16,8 @@ namespace Backend.Services
             _learnerRepo = learnerRepo;
         }
 
-        public Task<IEnumerable<GetAssignmentDto>> GetAllAsync() => _repo.GetAllAsync();
+        public Task<IEnumerable<GetAssignmentDto>> GetAllAsync(bool includeInactive = false)
+            => _repo.GetAllAsync(includeInactive);
 
         public Task<GetAssignmentDto?> GetByIdAsync(int id) => _repo.GetByIdAsync(id);
 

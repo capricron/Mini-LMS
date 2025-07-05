@@ -19,7 +19,11 @@ namespace Backend.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IEnumerable<GetAssignmentDto>> GetAll() => await _service.GetAllAsync();
+        public async Task<IEnumerable<GetAssignmentDto>> GetAll()
+        {
+            bool includeInactive = User.IsInRole("Manager");
+            return await _service.GetAllAsync(includeInactive);
+        }
 
         // [HttpGet("{id}")]
         // public async Task<IActionResult> GetById(int id)

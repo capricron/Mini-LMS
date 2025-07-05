@@ -7,6 +7,7 @@ namespace Backend.DTOs
         public string Description { get; set; } = string.Empty;
         public bool IsActive { get; set; }
         public string Media { get; set; }
+        public DateTime CreatedAt { get; set; } // tambahkan baris ini
 
         public List<MCQDto> Questions { get; set; } = new();
 

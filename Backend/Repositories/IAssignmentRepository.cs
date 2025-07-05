@@ -4,7 +4,7 @@ namespace Backend.Repositories
 {
     public interface IAssignmentRepository
     {
-        Task<IEnumerable<GetAssignmentDto>> GetAllAsync();
+        Task<IEnumerable<GetAssignmentDto>> GetAllAsync(bool includeInactive);
         Task<GetAssignmentDto?> GetByIdAsync(int id);
         Task<GetAssignmentDto> CreateAsync(CreateAssignmentDto dto);
         Task<GetAssignmentDto?> GetByIdWithQuestionsAsync(int id, string role);

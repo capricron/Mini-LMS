@@ -9,16 +9,25 @@ namespace Backend.Repositories
         private readonly AppDbContext _context;
 
         public AssignmentRepository(AppDbContext context) => _context = context;
-
-        public async Task<IEnumerable<GetAssignmentDto>> GetAllAsync()
+        public async Task<IEnumerable<GetAssignmentDto>> GetAllAsync(bool includeInactive = false)
         {
-            return await _context.Assignments
+            var query = _context.Assignments.AsQueryable();
+
+            if (!includeInactive)
+            {
+                query = query.Where(a => a.IsActive);
+            }
+
+            return await query
+                .OrderByDescending(a => a.CreatedAt) // Urutkan dari yang terbaru
                 .Select(a => new GetAssignmentDto
                 {
                     Id = a.Id,
                     Title = a.Title,
                     Description = a.Description,
-                    IsActive = a.IsActive
+                    IsActive = a.IsActive,
+                    Media = a.Media,
+                    CreatedAt = a.CreatedAt // sertakan CreatedAt di sini
                 })
                 .ToListAsync();
         }
@@ -164,6 +173,7 @@ namespace Backend.Repositories
                 Description = dto.Description,
                 IsActive = dto.IsActive,
                 Media = dto.Media,
+                CreatedAt = DateTime.UtcNow, // ✅ tambahkan baris ini
                 Questions = dto.Questions?.Select(q => new Models.McqQuestion
                 {
                     QuestionText = q.QuestionText,

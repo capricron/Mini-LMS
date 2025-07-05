@@ -23,7 +23,8 @@ namespace Backend.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Media = table.Column<string>(type: "text", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -148,8 +149,8 @@ namespace Backend.Migrations
 
             migrationBuilder.InsertData(
                 table: "Assignments",
-                columns: new[] { "Id", "Description", "IsActive", "Media", "Title" },
-                values: new object[] { 1, "Pertanyaan pilihan ganda tentang aritmatika dasar", true, "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm", "Quiz Matematika Dasar" });
+                columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "Media", "Title" },
+                values: new object[] { 1, new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Pertanyaan pilihan ganda tentang aritmatika dasar", true, "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm", "Quiz Matematika Dasar" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
