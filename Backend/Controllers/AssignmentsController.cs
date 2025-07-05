@@ -38,7 +38,7 @@ namespace Backend.Controllers
         public async Task<ActionResult<int>> CreateAsync(CreateAssignmentDto dto)
         {
             var id = await _service.CreateAssignmentWithQuestionsAsync(dto);
-            return Ok("oke");
+            return Ok(new { message = "oke" });
         }
 
         [HttpGet("{id}", Name = "GetByIdAsync")]

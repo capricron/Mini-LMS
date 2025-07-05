@@ -13,85 +13,85 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = Frontend
 build_property.RootNamespace = Frontend
-build_property.ProjectDir = C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Frontend\
+build_property.ProjectDir = c:\Users\Glaucus\Documents\GitHub\Mini-LMS\Frontend\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\Glaucus\Documents\GitHub\Mini-LMS\Frontend
+build_property.MSBuildProjectDirectory = c:\Users\Glaucus\Documents\GitHub\Mini-LMS\Frontend
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/App.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/App.razor]
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/AssignmentItem.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/AssignmentItem.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBc3NpZ25tZW50SXRlbS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/AuthRouteGuard.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/AuthRouteGuard.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBdXRoUm91dGVHdWFyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/MCQItem.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Components/MCQItem.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xNQ1FJdGVtLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/AssignmentDetail.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/AssignmentDetail.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzaWdubWVudERldGFpbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Assignments.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Assignments.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXNzaWdubWVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Counter.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Counter.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/CreateAssignments.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/CreateAssignments.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3JlYXRlQXNzaWdubWVudHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/EditAssignment.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/EditAssignment.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdEFzc2lnbm1lbnQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Home.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Login.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Review.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Review.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmV2aWV3LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Tugas.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Tugas.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHVnYXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/TugasDetail.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/TugasDetail.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVHVnYXNEZXRhaWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Unauthorized.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Pages/Unauthorized.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVW5hdXRob3JpemVkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/_Imports.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/_Imports.razor]
 build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Layout/MainLayout.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-yxi2lmzgn0
 
-[C:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Layout/NavMenu.razor]
+[c:/Users/Glaucus/Documents/GitHub/Mini-LMS/Frontend/Layout/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-fpiqm1rjhp

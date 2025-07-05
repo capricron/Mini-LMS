@@ -39,7 +39,7 @@ public class AppDbContext : DbContext
             Description = "Pertanyaan pilihan ganda tentang aritmatika dasar",
             Media = "https://www.youtube.com/embed/Z9NJwDxW7LQ?si=fYV2_h23v-vj-lAm",
             IsActive = true,
-            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Local) // ✅ Benar
+            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc)
         };
 
         var mcqs = new List<McqQuestion>
@@ -68,38 +68,38 @@ public class AppDbContext : DbContext
             }
         };
 
-            modelBuilder.Entity<Assignment>().HasData(assignment1);
-            modelBuilder.Entity<McqQuestion>().HasData(mcqs);
+        modelBuilder.Entity<Assignment>().HasData(assignment1);
+        modelBuilder.Entity<McqQuestion>().HasData(mcqs);
 
-            var learnerRole = new Role { Id = 1, Name = "Learner" };
-            var managerRole = new Role { Id = 2, Name = "Manager" };
+        var learnerRole = new Role { Id = 1, Name = "Learner" };
+        var managerRole = new Role { Id = 2, Name = "Manager" };
 
-            modelBuilder.Entity<Role>().HasData(learnerRole, managerRole);
+        modelBuilder.Entity<Role>().HasData(learnerRole, managerRole);
 
-            // Contoh user
-            var user1 = new User
-            {
-                Id = "user1",
-                Username = "budi",
-                Email = "budi@example.com",
-                Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
-                RoleId = learnerRole.Id
-            };
+        // Contoh user
+        var user1 = new User
+        {
+            Id = "user1",
+            Username = "budi",
+            Email = "budi@example.com",
+            Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
+            RoleId = learnerRole.Id
+        };
 
-            var user2 = new User
-            {
-                Id = "user2",
-                Username = "andi",
-                Email = "andi@example.com",
-                Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
-                RoleId = managerRole.Id
-            };
+        var user2 = new User
+        {
+            Id = "user2",
+            Username = "andi",
+            Email = "andi@example.com",
+            Password = "$2a$12$KViAg6rRQXmv0KOBog2t7.WJmsofzFj3nzw3VdkYVYvv2sfNX/2e2", // Hash dari "password123"
+            RoleId = managerRole.Id
+        };
 
-            modelBuilder.Entity<User>().HasData(user1, user2);
+        modelBuilder.Entity<User>().HasData(user1, user2);
 
-            modelBuilder.Entity<SubmittedAnswer>()
-            .HasOne(sa => sa.McqQuestion)
-            .WithMany()
-            .HasForeignKey(sa => sa.McqQuestionId);
-        }
+        modelBuilder.Entity<SubmittedAnswer>()
+        .HasOne(sa => sa.McqQuestion)
+        .WithMany()
+        .HasForeignKey(sa => sa.McqQuestionId);
+    }
 }
